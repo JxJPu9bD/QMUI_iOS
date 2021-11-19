@@ -265,6 +265,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, assign) BOOL               ignoreKVCAccessProhibited API_AVAILABLE(ios(13.0));
 @property(nonatomic, assign) BOOL               adjustScrollIndicatorInsetsByContentInsetAdjustment API_AVAILABLE(ios(13.0));
 
+#ifdef IOS13_SDK_ALLOWED
+@property(nonatomic, strong) UITabBarAppearance *tabBarAppearance API_AVAILABLE(ios(13.0));
+@property(nonatomic, strong) UINavigationBarAppearance *navigationBarAppearance API_AVAILABLE(ios(13.0));
+#endif
+
 NS_ASSUME_NONNULL_END
 
 /// 单例对象

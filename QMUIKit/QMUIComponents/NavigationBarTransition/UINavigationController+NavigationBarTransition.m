@@ -324,6 +324,16 @@ QMUISynthesizeIdStrongProperty(qmui_specifiedTextColor, setQmui_specifiedTextCol
         if ([vc respondsToSelector:@selector(navigationBarBackgroundImage)]) {
             UIImage *backgroundImage = [vc navigationBarBackgroundImage];
             [viewController.navigationController.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
+            
+#ifdef __IPHONE_15_0
+            if (@available(iOS 15.0, *)) {
+                UINavigationBarAppearance *appearance = QMUICMI.navigationBarAppearance;
+                appearance.backgroundColor = nil;
+                appearance.backgroundImage = backgroundImage;
+                viewController.navigationController.navigationBar.scrollEdgeAppearance = appearance;
+                viewController.navigationController.navigationBar.standardAppearance = appearance;
+            }
+#endif
         } else if (QMUICMIActivated) {
             [viewController.navigationController.navigationBar setBackgroundImage:[UINavigationBar.appearance backgroundImageForBarMetrics:UIBarMetricsDefault] forBarMetrics:UIBarMetricsDefault];
         }
@@ -338,7 +348,17 @@ QMUISynthesizeIdStrongProperty(qmui_specifiedTextColor, setQmui_specifiedTextCol
         
         // 导航栏底部的分隔线
         if ([vc respondsToSelector:@selector(navigationBarShadowImage)]) {
-            viewController.navigationController.navigationBar.shadowImage = [vc navigationBarShadowImage];
+            UIImage * _Nullable shadowImage = [vc navigationBarShadowImage];
+            viewController.navigationController.navigationBar.shadowImage = shadowImage;
+#ifdef __IPHONE_15_0
+            if (@available(iOS 15.0, *)) {
+                UINavigationBarAppearance *appearance = QMUICMI.navigationBarAppearance;
+                appearance.shadowColor = nil;
+                appearance.shadowImage = shadowImage;
+                viewController.navigationController.navigationBar.scrollEdgeAppearance = appearance;
+                viewController.navigationController.navigationBar.standardAppearance = appearance;
+            }
+#endif
         } else if (QMUICMIActivated) {
             viewController.navigationController.navigationBar.shadowImage = NavBarShadowImage;
         }

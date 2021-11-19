@@ -257,7 +257,11 @@
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
     if (!navigationBar) return;
     
+    UIImage *backgroundImage = nil;
+    UIImage *shadowImage = nil;
+    
     if ([self respondsToSelector:@selector(navigationBarBackgroundImage)]) {
+        backgroundImage = [self navigationBarBackgroundImage];
         [navigationBar setBackgroundImage:[self navigationBarBackgroundImage] forBarMetrics:UIBarMetricsDefault];
     }
     if ([self respondsToSelector:@selector(navigationBarBarTintColor)]) {
@@ -267,6 +271,7 @@
         navigationBar.barStyle = [self navigationBarStyle];
     }
     if ([self respondsToSelector:@selector(navigationBarShadowImage)]) {
+        shadowImage = [self navigationBarShadowImage];
         navigationBar.shadowImage = [self navigationBarShadowImage];
     }
     if ([self respondsToSelector:@selector(navigationBarTintColor)]) {
@@ -275,6 +280,19 @@
     if ([self respondsToSelector:@selector(titleViewTintColor)]) {
         self.titleView.tintColor = [self titleViewTintColor];
     }
+    
+    // 保证xcode13及以上可以编译
+#ifdef __IPHONE_15_0
+            if (@available(iOS 15.0, *)) {
+                UINavigationBarAppearance *appearance = QMUICMI.navigationBarAppearance;
+                appearance.backgroundColor = nil;
+                appearance.backgroundImage = backgroundImage;
+                appearance.shadowColor = nil;
+                appearance.shadowImage = shadowImage;
+                navigationBar.scrollEdgeAppearance = appearance;
+                navigationBar.standardAppearance = appearance;
+            }
+#endif
 }
 
 #pragma mark - <QMUINavigationControllerDelegate>
